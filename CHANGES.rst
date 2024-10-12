@@ -1,12 +1,11 @@
 CHANGELOG
 =========
 
-3.11 (unreleased)
+3.11 (2024-10-12)
 *****************
 
-- Allow to pause or resume periodic jobs individually or globally
-- Improved the scheduling code and shutdown the thread properly
-- Turned the snapshot list into a get request
+- updated the doc to link to the new name
+- Updated the docker image
 
 3.10 (2023-04-09)
 *****************
