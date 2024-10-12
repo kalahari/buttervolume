@@ -16,11 +16,11 @@ else
 fi
 
 # First remove the plugin
-if [ "`docker plugin ls | grep anybox/buttervolume:$VERSION | wc -l`" == "1" ]; then
+if [ "`docker plugin ls | grep ccomb/buttervolume:$VERSION | wc -l`" == "1" ]; then
     echo "Removing existing pluging with the same version..."
-    docker plugin rm anybox/buttervolume:$VERSION
+    docker plugin rm ccomb/buttervolume:$VERSION
     if [ $? -ne 0 ]; then
-        echo "anybox/buttervolume:$VERSION cannot be removed. Is it running? First disable it with docker plugin disable anybox/buttervolume:$VERSION"
+        echo "ccomb/buttervolume:$VERSION cannot be removed. Is it running? First disable it with docker plugin disable ccomb/buttervolume:$VERSION"
     fi
 fi
 
@@ -42,11 +42,11 @@ docker rm -vf "$id"
 docker rmi rootfs
 
 echo "Building the new plugin..."
-docker plugin create anybox/buttervolume:$VERSION .
+docker plugin create ccomb/buttervolume:$VERSION .
 
 echo "Succeeded!"
 popd > /dev/null
 
 echo
 echo "Now you can enable the plugin with:"
-echo "docker plugin enable anybox/buttervolume:$VERSION"
+echo "docker plugin enable ccomb/buttervolume:$VERSION"

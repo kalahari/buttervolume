@@ -1,6 +1,7 @@
-from os.path import dirname, join, realpath
-from setuptools import setup, find_packages
 import sys
+from os.path import dirname, join, realpath
+
+from setuptools import find_packages, setup
 
 VERSION = (
     open(join(dirname(realpath(__file__)), "buttervolume", "VERSION")).read().strip()
@@ -16,8 +17,8 @@ setup(
     name="buttervolume",
     version=VERSION,
     author="Christophe Combelles",
-    author_email="ccomb@anybox.fr",
-    url="https://github.com/anybox/buttervolume",
+    author_email="ccomb@prelab.fr",
+    url="https://github.com/ccomb/buttervolume",
     license="Apache License, Version 2.0",
     description="Docker plugin to manage Docker Volumes as BTRFS subvolumes",
     long_description=open("README.rst").read() + "\n" + open("CHANGES.rst").read(),

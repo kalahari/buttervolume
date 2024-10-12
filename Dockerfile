@@ -1,5 +1,5 @@
 FROM debian:bullseye
-MAINTAINER Christophe Combelles. <ccomb@anybox.fr>
+MAINTAINER Christophe Combelles. <ccomb@prelab.fr>
 
 
 RUN set -x; \

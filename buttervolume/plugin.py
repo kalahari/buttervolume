@@ -3,13 +3,13 @@ import csv
 import json
 import logging
 import os
-from bottle import request, route
-from buttervolume import btrfs
 from datetime import datetime
-from os.path import join, basename, dirname
-from subprocess import CalledProcessError
-from subprocess import run, PIPE
+from os.path import basename, dirname, join
+from subprocess import PIPE, CalledProcessError, run
 
+from bottle import request, route
+
+from buttervolume import btrfs
 
 config = configparser.ConfigParser()
 config.read("/etc/buttervolume/config.ini")
@@ -29,7 +29,7 @@ TEST_REMOTE_PATH = getconfig(
 SCHEDULE = getconfig(config, "SCHEDULE", "/etc/buttervolume/schedule.csv")
 SCHEDULE_DISABLED = f"{SCHEDULE}.disabled"
 FIELDS = ["Name", "Action", "Timer", "Active"]
-DRIVERNAME = getconfig(config, "DRIVERNAME", "anybox/buttervolume:latest")
+DRIVERNAME = getconfig(config, "DRIVERNAME", "ccomb/buttervolume:latest")
 RUNPATH = getconfig(config, "RUNPATH", "/run/docker")
 SOCKET = getconfig(config, "SOCKET", os.path.join(RUNPATH, "plugins", "btrfs.sock"))
 USOCKET = SOCKET
