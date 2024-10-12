@@ -6,8 +6,8 @@ VERSION=$1
 if [ "$VERSION" == "" ]; then
     VERSION="HEAD"
     echo "#####################"
-    echo "Building version HEAD. You can build another version with: ./rebuild.sh <VERSION>"
-    echo "Please not that only locally commited changes will be built"
+    echo "Building version HEAD. You can build another version with: ./build.sh <VERSION>"
+    echo "Please note that only locally commited changes will be built"
     echo "#####################"
 else
     echo "#####################"
