@@ -32,7 +32,7 @@ setup(
     install_requires=[
         "bottle",
         "urllib3>=2.0.2,<2.3",
-        "requests-unixsocket",
+        "requests-unixsocket2",
         "waitress",
         "webtest",
     ],
