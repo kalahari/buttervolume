@@ -1,9 +1,10 @@
 CHANGELOG
 =========
-3.12 (unreleased)
+3.12 (2024-11-05)
 *****************
 
 - Updated the Docker image to Debian 12
+- changed requests-unixsocket to requests-unixsocket2
 
 3.11 (2024-10-12)
 *****************
