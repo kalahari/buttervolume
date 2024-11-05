@@ -17,7 +17,7 @@ setup(
     name="buttervolume",
     version=VERSION,
     author="Christophe Combelles",
-    author_email="ccomb@prelab.fr",
+    author_email="ccomb@free.fr",
     url="https://github.com/ccomb/buttervolume",
     license="Apache License, Version 2.0",
     description="Docker plugin to manage Docker Volumes as BTRFS subvolumes",
@@ -31,7 +31,7 @@ setup(
     },
     install_requires=[
         "bottle",
-        "urllib3<1.27,>=1.21.1",
+        "urllib3>=2.0.2,<2.3",
         "requests-unixsocket",
         "waitress",
         "webtest",
