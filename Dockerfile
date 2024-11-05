@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:12
 MAINTAINER Christophe Combelles. <ccomb@prelab.fr>
 
 

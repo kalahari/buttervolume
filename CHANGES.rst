@@ -1,11 +1,15 @@
 CHANGELOG
 =========
+3.12 (unreleased)
+*****************
+
+- Updated the Docker image to Debian 12
 
 3.11 (2024-10-12)
 *****************
 
 - updated the doc to link to the new name
-- Updated the docker image
+- Updated the Docker image
 
 3.10 (2023-04-09)
 *****************
