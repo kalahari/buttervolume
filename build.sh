@@ -4,7 +4,7 @@ set -e
 
 VERSION=$1
 if [ "$VERSION" == "" ]; then
-    VERSION="HEAD"
+    VERSION="latest"
     echo "#####################"
     echo "Building version HEAD. You can build another version with: ./build.sh <VERSION>"
     echo "Please note that only locally commited changes will be built"
@@ -28,7 +28,12 @@ pushd $( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd ) > /de
 
 echo "Creating an archive for the intended version"
 rm -f buttervolume.zip
-git archive -o buttervolume.zip $VERSION
+if [ "$VERSION" == "latest" ]; then
+    git archive -o buttervolume.zip HEAD
+else
+    git archive -o buttervolume.zip $VERSION
+fi
+
 
 echo "Building an image with this version..."
 docker build -t rootfs . --no-cache
