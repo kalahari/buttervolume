@@ -1,5 +1,5 @@
-FROM ubuntu/python:3.12-24.04_stable
-LABEL Forked from Buttervolume by Christophe Combelles
+FROM ubuntu:noble
+LABEL Author="Forked from Buttervolume by Christophe Combelles"
 
 RUN set -x; \
     apt-get update \
@@ -7,6 +7,7 @@ RUN set -x; \
         btrfs-progs \
         curl \
         ca-certificates \
+        python3-setuptools \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /run/docker/plugins \
@@ -21,7 +22,7 @@ RUN mkdir /usr/src/buttervolume \
     && python3 setup.py install
 
 # add tini to avoid sshd zombie processes
-ENV TINI_VERSION v0.19.0
+ENV TINI_VERSION=v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
