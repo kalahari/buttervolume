@@ -15,7 +15,7 @@ before_script:
   - sudo mount -o loop /var/lib/docker/btrfs.img /var/lib/buttervolume
   - sudo mkdir -p /var/lib/buttervolume/{volumes,snapshots,received}
   - sudo service docker start
-  - docker build -t ccomb/buttervolume docker/
+  - docker build -t kalahari/buttervolume docker/
 
 script:
-  - docker run -it --rm --privileged -v /var/lib/buttervolume:/var/lib/buttervolume -v "$PWD":/usr/src/buttervolume -w /usr/src/buttervolume -e SSH_PORT=113 ccomb/buttervolume test
+  - docker run -it --rm --privileged -v /var/lib/buttervolume:/var/lib/buttervolume -v "$PWD":/usr/src/buttervolume -w /usr/src/buttervolume kalahari/buttervolume test

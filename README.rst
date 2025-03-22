@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/ccomb/buttervolume.svg?branch=master
-   :target: https://travis-ci.org/ccomb/buttervolume
+.. image:: https://travis-ci.org/kalahari/buttervolume.svg?branch=master
+   :target: https://travis-ci.org/kalahari/buttervolume
    :alt: Travis state
 
 
@@ -79,7 +79,7 @@ If you want to be a contributor, read this chapter. Otherwise jump to the next s
 
 You first need to create a root filesystem for the plugin, using the provided Dockerfile::
 
-    git clone https://github.com/ccomb/buttervolume
+    git clone https://github.com/kalahari/buttervolume
     ./build.sh
 
 By default the plugin is built for the latest commit (HEAD). You can build another version by specifying it like this::
@@ -88,14 +88,14 @@ By default the plugin is built for the latest commit (HEAD). You can build anoth
 
 At this point, you can set the SSH_PORT option for the plugin by running::
 
-    docker plugin set ccomb/buttervolume SSH_PORT=1122
+    docker plugin set kalahari/buttervolume SSH_PORT=1122
 
 Note that this option is only relevant if you use the replication feature between two nodes.
 
 Now you can enable the plugin, which should start buttervolume in the plugin
 container::
 
-    docker plugin enable ccomb/buttervolume:HEAD
+    docker plugin enable kalahari/buttervolume:HEAD
 
 You can check it is responding by running a buttervolume command::
 
@@ -129,7 +129,7 @@ Install and run as a user
 
 If the plugin is already pushed to the image repository, you can install it with::
 
-    docker plugin install ccomb/buttervolume
+    docker plugin install kalahari/buttervolume
 
 Check it is running::
 
@@ -148,7 +148,7 @@ And try a buttervolume command::
 Or create a volume with the driver. Note that the name of the driver is the
 name of the plugin::
 
-    docker volume create -d ccomb/buttervolume:latest myvolume
+    docker volume create -d kalahari/buttervolume:latest myvolume
 
 Note that instead of using aliases, you can also define functions that you
 can put in your .bash_profile or .bash_aliases::
@@ -158,7 +158,7 @@ can put in your .bash_profile or .bash_aliases::
       sudo runc --root $RUNCROOT $@
     }
     function buttervolume () {
-      drunc exec -t $(docker plugin ls --no-trunc  | grep 'ccomb/buttervolume:latest' |  awk '{print $1}') buttervolume $@
+      drunc exec -t $(docker plugin ls --no-trunc  | grep 'kalahari/buttervolume:latest' |  awk '{print $1}') buttervolume $@
     }
 
 
@@ -167,9 +167,9 @@ Upgrade
 
 You must force disable it before reinstalling it (as explained in the docker documentation)::
 
-    docker plugin disable -f ccomb/buttervolume
-    docker plugin rm -f ccomb/buttervolume
-    docker plugin install ccomb/buttervolume
+    docker plugin disable -f kalahari/buttervolume
+    docker plugin rm -f kalahari/buttervolume
+    docker plugin install kalahari/buttervolume
 
 
 Configure
@@ -202,13 +202,13 @@ Example of ``config.ini`` file::
 
 If none of this is configured, the following default values are used:
 
-    * ``DRIVERNAME = ccomb/buttervolume:latest``
+    * ``DRIVERNAME = kalahari/buttervolume:latest``
     * ``VOLUMES_PATH = /var/lib/buttervolume/volumes/``
     * ``SNAPSHOTS_PATH = /var/lib/buttervolume/snapshots/``
     * ``TEST_REMOTE_PATH = /var/lib/buttervolume/received/``
     * ``SCHEDULE = /etc/buttervolume/schedule.csv``
     * ``RUNPATH = /run/docker``
-    * ``SOCKET = $RUNPATH/plugins/btrfs.sock`` # only if run manually
+    * ``SOCKET = $RUNPATH/plugins/buttervolume.sock`` # only if run manually
     * ``TIMER = 60``
     * ``DTFORMAT = %Y-%m-%dT%H:%M:%S.%f``
     * ``LOGLEVEL = INFO``
@@ -222,7 +222,7 @@ Running the plugin
 
 The normal way to run it is as a new-style Docker Plugin as described above in
 the "Install and run" section, which will start it automatically.  This will
-create a ``/run/docker/plugins/<uuid>/btrfs.sock`` file to be used by the
+create a ``/run/docker/plugins/<uuid>/buttervolume.sock`` file to be used by the
 Docker daemon. The ``<uuid>`` is the unique identifier of the `runc/OCI`
 container running it.  This means you can probably run several versions of the
 plugin simultaneously but this is currently not recommended unless you keep in
@@ -232,17 +232,17 @@ snapshots of each different versions using the ``config.ini`` file.
 
 Then the name of the volume driver is the name of the plugin::
 
-    docker volume create -d ccomb/buttervolume:latest myvolume
+    docker volume create -d kalahari/buttervolume:latest myvolume
 
 or::
 
-    docker volume create --volume-driver=ccomb/buttervolume:latest
+    docker volume create --volume-driver=kalahari/buttervolume:latest
 
 When creating a volume, you can choose to disable copy-on-write on a per-volume
 basis. Just use the `-o` or `--opt` option as defined in the `Docker documentation
 <https://docs.docker.com/engine/reference/commandline/volume_create/#options>`_ ::
 
-    docker volume create -d ccomb/buttervolume -o copyonwrite=false myvolume
+    docker volume create -d kalahari/buttervolume -o copyonwrite=false myvolume
 
 Running the plugin locally or in legacy mode
 --------------------------------------------
@@ -252,7 +252,7 @@ start it manually with::
 
     sudo buttervolume run
 
-In this case it will create a unix socket in ``/run/docker/plugins/btrfs.sock``
+In this case it will create a unix socket in ``/run/docker/plugins/buttervolume.sock``
 for use by Docker with the legacy plugin system. Then the name of the volume
 driver is the name of the socket file::
 
@@ -270,10 +270,10 @@ Creating and deleting volumes
 -----------------------------
 
 Once the plugin is running, whenever you create a container you can specify the
-volume driver with ``docker create --volume-driver=ccomb/buttervolume --name <name>
+volume driver with ``docker create --volume-driver=kalahari/buttervolume --name <name>
 <image>``.  You can also manually create a BTRFS volume with ``docker volume
-create -d ccomb/buttervolume``. It also works with docker-compose, by specifying the
-``ccomb/buttervolume`` driver in the ``volumes`` section of the compose file.
+create -d kalahari/buttervolume``. It also works with docker-compose, by specifying the
+``kalahari/buttervolume`` driver in the ``volumes`` section of the compose file.
 
 When you delete the volume with ``docker rm -v <container>`` or ``docker volume
 rm <volume>``, the BTRFS subvolume is deleted. If you snapshotted the volume
@@ -400,32 +400,8 @@ the ``StrictHostKeyChecking no`` option be enabled in
 Please note you have to restart you docker daemons each time you change ssh configuration.
 
 The default SSH_PORT of the ssh server included in the plugin is **1122**. You can
-change it with `docker plugin set ccomb/buttervolume SSH_PORT=<PORT>` before
+change it with `docker plugin set kalahari/buttervolume SSH_PORT=<PORT>` before
 enabling the plugin.
-
-Synchronize a volume from another host volume
----------------------------------------------
-
-You can receive data from a remote volume, so in case there is a volume on
-the remote host with the **same name**, it will get new and most recent data
-from the distant volume and replace in the local volume. Before running the
-``rsync`` command a snapshot is made on the local machine to manage recovery::
-
-    buttervolume sync <volume> <host1> [<host2>][...]
-
-The intent is to synchronize a volume between multi hosts on running
-containers, so you should schedule that action on each nodes from all remote
-hosts.
-
-.. note::
-
-   As we are pulling data from multiple hosts we never remove data, consider
-   removing scheduled actions before removing data on each hosts.
-
-.. warning::
-
-   Make sure your application is able to handle such synchronisation
-
 
 Purge old snapshots
 -------------------
@@ -639,18 +615,18 @@ Then stop all your containers, excepted buttervolume
 
 Now snapshot and delete all your volumes::
 
-    volumes=$(docker volume ls -f driver=ccomb/buttervolume:latest --format "{{.Name}}")
-    # or: # volumes=$(docker volume ls -f driver=ccomb/buttervolume:latest|tail -n+2|awk '{print $2}')
+    volumes=$(docker volume ls -f driver=kalahari/buttervolume:latest --format "{{.Name}}")
+    # or: # volumes=$(docker volume ls -f driver=kalahari/buttervolume:latest|tail -n+2|awk '{print $2}')
     echo $volumes
     for v in $volumes; do docker exec buttervolume_plugin_1 buttervolume snapshot $v; done
     for v in $volumes; do docker volume rm $v; done
 
-Then stop the buttervolume container, **remove the old btrfs.sock file**, and
+Then stop the buttervolume container, **remove the old buttervolume.sock file**, and
 restart docker::
 
     docker stop buttervolume_plugin_1
     docker rm -v buttervolume_plugin_1
-    rm /run/docker/plugins/btrfs.sock
+    rm /run/docker/plugins/buttervolume.sock
     systemctl stop docker
 
 If you were using Buttervolume 1.x, you must move your snapshots to the new location::
@@ -670,16 +646,16 @@ Restore /var/lib/docker/volumes as the original folder::
     systemctl start docker
 
 Change your volume configurations (in your compose files) to use the new
-``ccomb/buttervolume:latest`` driver name instead of ``btrfs``
+``kalahari/buttervolume:latest`` driver name instead of ``btrfs``
 
 Then start the new buttervolume 3.x as a managed plugin and check it is started::
 
-    docker plugin install ccomb/buttervolume:latest
+    docker plugin install kalahari/buttervolume:latest
     docker plugin ls
 
 Then recreate all your volumes with the new driver and restore them from the snapshots::
 
-    for v in $volumes; do docker volume create -d ccomb/buttervolume:latest $v; done
+    for v in $volumes; do docker volume create -d kalahari/buttervolume:latest $v; done
     export RUNCROOT=/run/docker/runtime-runc/plugins.moby/ # or /run/docker/plugins/runtime-root/plugins.moby/
     alias drunc="sudo runc --root $RUNCROOT"
     alias buttervolume="drunc exec -t $(drunc list|tail -n+2|awk '{print $1}') buttervolume"

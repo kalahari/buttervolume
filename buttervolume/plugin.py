@@ -29,9 +29,9 @@ TEST_REMOTE_PATH = getconfig(
 SCHEDULE = getconfig(config, "SCHEDULE", "/etc/buttervolume/schedule.csv")
 SCHEDULE_DISABLED = f"{SCHEDULE}.disabled"
 FIELDS = ["Name", "Action", "Timer", "Active"]
-DRIVERNAME = getconfig(config, "DRIVERNAME", "ccomb/buttervolume:latest")
+DRIVERNAME = getconfig(config, "DRIVERNAME", "kalahari/buttervolume:latest")
 RUNPATH = getconfig(config, "RUNPATH", "/run/docker")
-SOCKET = getconfig(config, "SOCKET", os.path.join(RUNPATH, "plugins", "btrfs.sock"))
+SOCKET = getconfig(config, "SOCKET", os.path.join(RUNPATH, "plugins", "buttervolume.sock"))
 USOCKET = SOCKET
 if not os.path.exists(USOCKET):
     # socket path on the host or another container
@@ -46,7 +46,7 @@ if not os.path.exists(USOCKET):
     )
     if plugins:
         plugin = plugins[0]  # can we have several plugins with the same name?
-        USOCKET = os.path.join(RUNPATH, "plugins", plugin["Id"], "btrfs.sock")
+        USOCKET = os.path.join(RUNPATH, "plugins", plugin["Id"], "buttervolume.sock")
 
 TIMER = int(getconfig(config, "TIMER", 60))
 DTFORMAT = getconfig(config, "DTFORMAT", "%Y-%m-%dT%H:%M:%S.%f")
@@ -174,48 +174,6 @@ def list_volumes():
             continue
         volumes.append(p)
     return {"Volumes": [{"Name": basename(v)} for v in volumes], "Err": ""}
-
-
-@route("/VolumeDriver.Volume.Sync", ["POST"])
-@add_debug_log
-def volume_sync(req):
-    """Rsync between two nodes"""
-    test = req.get("Test", False)
-    remote_volumes = VOLUMES_PATH if not test else TEST_REMOTE_PATH
-    volumes = req["Volumes"]
-    remote_hosts = req["Hosts"]
-    port = os.getenv("SSH_PORT", "1122")
-    errors = list()
-    for volume_name in volumes:
-        local_volume_path = join(VOLUMES_PATH, volume_name)
-        remote_volume_path = join(remote_volumes, volume_name)
-        for remote_host in remote_hosts:
-            log.debug("Rsync volume: %s from host: %s", local_volume_path, remote_host)
-            cmd = [
-                "rsync",
-                "-v",
-                "-r",
-                "-a",
-                "-z",
-                "-h",
-                "-P",
-                "-e",
-                "ssh -p {}".format(port),
-                "{}:{}/".format(remote_host, remote_volume_path),
-                local_volume_path,
-            ]
-            log.debug("Running %r", cmd)
-            try:
-                run(cmd, check=True, stdout=PIPE, stderr=PIPE)
-            except Exception as ex:
-                err = getattr(ex, "stderr", ex)
-                error_message = "Error while rsync {} from {} (cmd: {}): " "{}".format(
-                    volume_name, remote_host, cmd, err
-                )
-                log.error(error_message)
-                errors.append(error_message)
-
-    return {"Err": "\n".join(errors)}
 
 
 @route("/VolumeDriver.Capabilities", ["POST"])

@@ -1,6 +1,5 @@
-FROM debian:12
-MAINTAINER Christophe Combelles. <ccomb@prelab.fr>
-
+FROM ubuntu/python:3.12-24.04_stable
+LABEL Forked from Buttervolume by Christophe Combelles
 
 RUN set -x; \
     apt-get update \
@@ -8,15 +7,12 @@ RUN set -x; \
         btrfs-progs \
         curl \
         ca-certificates \
-        python3-setuptools \
-        ssh \
         unzip \
-        rsync \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /run/docker/plugins \
     && mkdir -p /var/lib/buttervolume/volumes \
     && mkdir -p /var/lib/buttervolume/snapshots \
-    && mkdir /etc/buttervolume /root/.ssh
+    && mkdir /etc/buttervolume
 
 COPY buttervolume.zip /
 RUN mkdir /usr/src/buttervolume \

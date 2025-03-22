@@ -1,40 +1,41 @@
 {
     "Description": "BTRFS Volume Plugin for Docker",
-    "Documentation": "https://github.com/ccomb/buttervolume/",
-    "Entrypoint": ["/entrypoint.sh", "run"],
-    "Mounts": [
-        {"Type": "bind",
-         "Source": "/var/lib/buttervolume",
-         "Destination": "/var/lib/buttervolume",
-         "Options": ["rbind"]},
-        {"Type": "bind",
-         "Source": "/var/lib/buttervolume/config",
-         "Destination": "/etc/buttervolume",
-         "Options": ["rbind"]},
-        {"Type": "bind",
-         "Source": "/var/lib/buttervolume/ssh",
-         "Destination": "/root/.ssh",
-         "Options": ["rbind"]}
+    "Documentation": "https://github.com/kalahari/buttervolume/",
+    "Entrypoint": [
+        "/entrypoint.sh",
+        "run"
     ],
-        "PropagatedMount": "/var/lib/buttervolume",
+    "Mounts": [
+        {
+            "Type": "bind",
+            "Source": "/var/lib/buttervolume",
+            "Destination": "/var/lib/buttervolume",
+            "Options": [
+                "rbind"
+            ]
+        },
+        {
+            "Type": "bind",
+            "Source": "/var/lib/buttervolume/config",
+            "Destination": "/etc/buttervolume",
+            "Options": [
+                "rbind"
+            ]
+        }
+    ],
+    "PropagatedMount": "/var/lib/buttervolume",
     "Network": {
-        "Type": "host"
+        "Type": "none"
     },
-    "Interface" : {
-        "Types": ["docker.volumedriver/1.0"],
-        "Socket": "btrfs.sock"
+    "Interface": {
+        "Types": [
+            "docker.volumedriver/1.0"
+        ],
+        "Socket": "buttervolume.sock"
     },
     "Linux": {
-        "Capabilities": ["CAP_SYS_ADMIN"]
-    },
-    "Env": [
-        {
-            "Name": "SSH_PORT",
-            "Description": "SSH Port",
-            "Settable": [
-                "value"
-            ],
-            "Value": "1122"
-        }
-    ]
+        "Capabilities": [
+            "CAP_SYS_ADMIN"
+        ]
+    }
 }

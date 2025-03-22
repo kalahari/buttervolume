@@ -17,8 +17,8 @@ else
     git archive -o buttervolume.zip $VERSION
 fi
 
-docker build --build-arg VERSION=$VERSION -t ccomb/buttervolume_test:$VERSION . --no-cache
-test="sudo docker run -it --rm --privileged -v /var/lib/docker:/var/lib/docker -v $PWD:/usr/src/buttervolume -w /usr/src/buttervolume ccomb/buttervolume_test:HEAD test"
+docker build --build-arg VERSION=$VERSION -t kalahari/buttervolume_test:$VERSION . --no-cache
+test="sudo docker run -it --rm --privileged -v /var/lib/docker:/var/lib/docker -v $PWD:/usr/src/buttervolume -w /usr/src/buttervolume kalahari/buttervolume_test:HEAD test"
 $test
 echo "#############################"
 echo "You can run tests again with:"
