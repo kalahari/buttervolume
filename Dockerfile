@@ -21,10 +21,10 @@ RUN mkdir /usr/src/buttervolume \
     && cd /usr/src/buttervolume \
     && python3 setup.py install
 
-# add tini to avoid sshd zombie processes
-ENV TINI_VERSION=v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
+# # add tini to avoid sshd zombie processes
+# ENV TINI_VERSION=v0.19.0
+# ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+# RUN chmod +x /tini
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]

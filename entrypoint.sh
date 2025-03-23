@@ -5,5 +5,8 @@ if [[ $1 == 'test' ]]; then
     set -x
     exec python3 setup.py $@
 else
-    /tini -s -- buttervolume $@
+    # /tini -s -- buttervolume $@
+    pwd
+    ls -alh
+    ./buttervolume $@
 fi
